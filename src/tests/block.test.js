@@ -10,7 +10,6 @@ describe('Block', () => {
     });
 
     it('sets the `data` to match the input', () => {
-        console.log("Here");
         expect(block.data).toEqual(data);
     });
 
