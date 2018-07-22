@@ -4,7 +4,7 @@ const nodeExternals = require('webpack-node-externals')
 const StartServerPlugin = require('start-server-webpack-plugin')
 module.exports = {
     entry: [
-        './src/index.js',
+        './src/app/index.js',
         'webpack/hot/poll?1000'
     ],
     watch: true,

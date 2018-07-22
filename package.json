@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "dev-test": "nodemon dev-test",
-    "start:server": "rm -rf ./build && webpack --config webpack.config.server.js"
+    "start": "node .build/server.js",
+    "dev": "rm -rf ./build && webpack --config webpack.config.server.js"
   },
   "keywords": [],
   "author": "",
