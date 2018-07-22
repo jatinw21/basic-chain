@@ -1,25 +1,13 @@
 import http from 'http'
-import Block from './block'
+import Block from './blockchain/block'
 import app from './server'
-const block = new Block('test1', 'test2', 'test3', 'test4')
-
-// console.log("\n=====")
-// console.log(block.toString())
-// console.log("=====")
-
-// console.log("\n=====")
-// console.log(Block.genesis().toString())
-// console.log("=====")
-
-// const fooBlock = Block.mineBlock(Block.genesis(), "foo");
-// console.log("\n=====")
-// console.log(fooBlock.toString())
-// console.log("=====")
 
 const server = http.createServer(app)
 let currentApp = app
 server.listen(3000)
 
+// for any changes in the entry point file, hot reload doesn't work
+// and restart of the application is needed
 
 if (module.hot) {
     module.hot.accept('./server', () => {
