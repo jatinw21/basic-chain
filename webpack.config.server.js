@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const StartServerPlugin = require('start-server-webpack-plugin')
+
 module.exports = {
     entry: [
         './src/app/index.js',
@@ -26,7 +27,8 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             "process.env": {
-                "BUILD_TARGET": JSON.stringify('server')
+                "BUILD_TARGET": JSON.stringify('server'),
+                "HTTP_PORT": JSON.stringify(process.env.HTTP_PORT || 3002)
             }
         }),
     ],
@@ -34,5 +36,6 @@ module.exports = {
         path: path.join(__dirname, '.build'),
         filename: 'server.js'
     },
-    mode: 'development'
+    mode: 'development',
 }
+
