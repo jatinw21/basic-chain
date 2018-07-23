@@ -1,10 +1,11 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import Blockchain from '../blockchain'
+import P2PServer from './p2p-server'
 
 const app = express()
-
 const bc = new Blockchain()
+const p2pServer = new P2PServer(bc);
 
 app.use(bodyParser.json());
 
@@ -19,3 +20,6 @@ app.post('/mine', (req, res) => {
 })
 
 export default app
+
+// listening for Websocket server
+p2pServer.listen()

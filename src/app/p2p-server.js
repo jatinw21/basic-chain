@@ -12,7 +12,7 @@ const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
 // Whenever a new block is mined on the network, the change is shared with the rest of the network
 // and nodes accept the largest chain and keep the blockchain going
 
-class P2PServer {
+export default class P2PServer {
     constructor(blockchain) {
         this.blockchain = blockchain
 
@@ -25,10 +25,24 @@ class P2PServer {
         console.log(`Listening for peer to peer connections on: ${P2P_PORT}`)
         
         server.on('connection', socket => {this.connectSocket(socket)})
+
+        // if this node is started later, it should try to all existing peers specified
+        this.connectToPeers()
     }
 
-    connectSocket() {
+    connectSocket(socket) {
         this.sockets.push(socket)
         console.log(`Socket connected: ${socket._socket.remoteAddress}:${socket._socket.remotePort}`)
+    }
+
+    connectToPeers() {
+        peers.forEach(peer => {
+            // ws://localhost:5006
+            const socket = new Websocket(peer)
+
+            // the specified socket might not be open yet, but we want to connect
+            // to this peer as soon as that peer starts the Websocket server
+            socket.on('open', () => this.connectSocket(socket))
+        })
     }
 }
