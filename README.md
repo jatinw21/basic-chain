@@ -1,7 +1,7 @@
 # Basic-chain
 A basic implementation of a simple blockchain to practice its implementation and understand it more closely.
 
-Node.js is used for backend, jest for testing.
+Node.js (Express) is used for backend, jest for testing.
 
 ## Run
 `npm install`
@@ -10,3 +10,6 @@ Node.js is used for backend, jest for testing.
 
 `/mine` endpoint for posting new blocks
 `/blocks` endpoint for looking at current state of the blockchain
+
+#### Webpack and babel used to manage the project and transpile from ES6 to vanilla javascript
+

@@ -29,7 +29,8 @@
     "http": "0.0.0",
     "start-server-webpack-plugin": "^2.2.5",
     "webpack": "^4.16.1",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "ws": "^6.0.0"
   },
   "jest": {
     "transform": {

@@ -28,7 +28,9 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 "BUILD_TARGET": JSON.stringify('server'),
-                "HTTP_PORT": JSON.stringify(process.env.HTTP_PORT || 3002)
+                "HTTP_PORT": JSON.stringify(process.env.HTTP_PORT || 3002),
+                "P2P_PORT": JSON.stringify(process.env.P2P_PORT || 5002),
+                "PEERS": JSON.stringify(process.env.PEERS)
             }
         }),
     ],
