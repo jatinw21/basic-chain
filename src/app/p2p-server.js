@@ -33,6 +33,12 @@ export default class P2PServer {
     connectSocket(socket) {
         this.sockets.push(socket)
         console.log(`Socket connected: ${socket._socket.remoteAddress}:${socket._socket.remotePort}`)
+
+        // as soon as it connects, add a message handler to receive messages
+        this.messageHandler(socket)
+
+        // Now, send this blockchain so that other peer can receive it and sync etc.
+        socket.send(JSON.stringify(this.blockchain.chain))
     }
 
     connectToPeers() {
@@ -43,6 +49,13 @@ export default class P2PServer {
             // the specified socket might not be open yet, but we want to connect
             // to this peer as soon as that peer starts the Websocket server
             socket.on('open', () => this.connectSocket(socket))
+        })
+    }
+
+    messageHandler(socket) {
+        socket.on('message', message => {
+            const data = JSON.parse(message)
+            console.log('data:', data)
         })
     }
 }
