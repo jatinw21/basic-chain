@@ -38,7 +38,7 @@ export default class P2PServer {
         this.messageHandler(socket)
 
         // Now, send this blockchain so that other peer can receive it and sync etc.
-        socket.send(JSON.stringify(this.blockchain.chain))
+        this.sendChain(socket)
     }
 
     connectToPeers() {
@@ -55,7 +55,22 @@ export default class P2PServer {
     messageHandler(socket) {
         socket.on('message', message => {
             const data = JSON.parse(message)
-            console.log('data:', data)
+            // console.log('data:', data)
+
+            // REVIEW: What id there are other kind of messages later in the app
+            // to send something else
+            this.blockchain.replaceChain(data)
+        })
+    }
+
+    sendChain(socket) {
+        socket.send(JSON.stringify(this.blockchain.chain))
+    }
+
+    // send updated bc of this server to others
+    syncChains() {
+        this.sockets.forEach(socket => {
+            this.sendChain(socket)
         })
     }
 }

@@ -16,6 +16,12 @@ app.get('/blocks', (req, res) => {
 app.post('/mine', (req, res) => {
     const block = bc.addBlock(req.body.data)
     console.log(`New block added: ${block.toString()}`)
+
+    // This is the only way to add new blocks right now.
+    // And whenever it is added, we want to send the updated bc to every other node
+    // So, if this is bigger, everyone will sync to this
+    p2pServer.syncChains()
+
     res.redirect('/blocks')  
 })
 
