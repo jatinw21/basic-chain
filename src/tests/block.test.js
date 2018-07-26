@@ -1,5 +1,7 @@
 import Block from '../blockchain/block';
 
+import { DIFFICULTY } from '../config'
+
 describe('Block', () => {
     let data, lastBlock, block;
 
@@ -16,4 +18,9 @@ describe('Block', () => {
     it('sets the `lastHash` to match the hash of last block', () => {
         expect(block.lastHash).toEqual(lastBlock.hash);
     });
+
+    it('generates hash matching difficulty', () => {
+        expect(block.hash.substring(0, DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY))
+        console.log(block.toString());
+    })
 });

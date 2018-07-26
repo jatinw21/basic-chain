@@ -1,6 +1,6 @@
 import SHA256 from 'crypto-js/sha256'
 
-const DIFFICULTY = 4
+import { DIFFICULTY } from '../config'
 
 export default class Block {
     constructor(timestamp, lastHash, hash, data, nonce) {
