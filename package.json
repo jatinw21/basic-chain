@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "start": "node .build/server.js",
+    "start": "babel-node .build/server.js",
     "dev": "rm -rf ./build && webpack --config webpack.config.server.js"
   },
   "keywords": [],

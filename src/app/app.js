@@ -29,3 +29,9 @@ export default app
 
 // listening for Websocket server
 p2pServer.listen()
+
+// NOTE: Testing stuff here
+
+// for (let i = 0; i < 10; i++) {
+//     console.log(bc.addBlock(`foo ${i}`).toString());
+// }
