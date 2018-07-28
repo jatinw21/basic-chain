@@ -1,10 +1,11 @@
+import ChainUtil from './chain-util'
 import { INITIAL_BALANCE } from '../config'
 
 export default class Wallet {
     constructor() {
         this.balance = INITIAL_BALANCE;
-        this.keypair = null;
-        this.publicKey = null;
+        this.keypair = ChainUtil.genKeyPair();
+        this.publicKey = this.keypair.getPublic().encode('hex');
     }
 
     toString() {
