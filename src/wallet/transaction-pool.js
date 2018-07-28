@@ -13,4 +13,8 @@ export default class TransactionPool {
             this.transactions.push(transaction);
         }
     }
+
+    existingTransaction(address) {
+        return this.transactions.find(t => t.input.address === address)
+    }
 }
