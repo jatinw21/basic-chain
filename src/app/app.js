@@ -36,7 +36,7 @@ p2pServer.listen()
 //     console.log(bc.addBlock(`foo ${i}`).toString());
 // }
 
-// import Wallet from '../wallet'
-// const wallet = new Wallet();
+import Wallet from '../wallet'
+const wallet = new Wallet();
 
-// console.log(wallet.toString());
+console.log(wallet.toString());
