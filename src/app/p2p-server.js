@@ -68,6 +68,8 @@ export default class P2PServer {
                 case MESSAGE_TYPES.transaction:
                     this.transactionPool.updateOrAddTransaction(data.transaction);
                     break;
+                default:
+                    throw new Error("Undefined or improper message type.");
             }
         })
     }

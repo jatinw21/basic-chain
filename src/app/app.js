@@ -38,8 +38,13 @@ app.post('/transact', (req, res) => {
     const transaction = wallet.createTransaction(recipient, amount, tp)
 
     p2pServer.broadcastTransaction(transaction)
-    
+
     res.redirect('/transactions')
+})
+
+// can see own public key, if share them by sending to others if needed
+app.get('/public-key', (req, res) => {
+    res.json({ publicKey: wallet.publicKey })
 })
 
 export default app
