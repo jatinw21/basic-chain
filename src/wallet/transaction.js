@@ -41,4 +41,12 @@ export default class Transaction {
             signature: senderWallet.sign(ChainUtil.hash(transaction.outputs))
         }
     }
+
+    static verifyTransaction(transaction) {
+        return ChainUtil.verfifySignature(
+            transaction.input.address,
+            transaction.input.signature,
+            ChainUtil.hash(transaction.outputs)
+        )
+    }
 }

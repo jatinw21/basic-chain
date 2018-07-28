@@ -26,12 +26,4 @@ export default class ChainUtil {
         // this returns true or false
         return ec.keyFromPublic(publicKey, 'hex').verify(dataHash, signature)
     }
-
-    static verifyTransaction(transaction) {
-        ChainUtil.verfifySignature(
-            transaction.input.address, 
-            transaction.input.signature, 
-            ChainUtil.hash(transaction.outputs)
-        )
-    }
 }
