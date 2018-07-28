@@ -32,6 +32,9 @@ export default class Transaction {
         return this
     }
 
+    // cannot give more value to self because there's an if statement checking it
+    // cannot make a transaction from another person's wallet because wouldn't have their keypair
+    // and so can't sign the transaction with their private key
     static newTransaction(senderWallet, recipient, amount) {
         const transaction = new this()
 
