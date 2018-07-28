@@ -29,4 +29,15 @@ describe('Transaction', () => {
         ).toEqual(amount)
     })
 
+    describe('transacting with amount that exceeds balance', () => {
+        beforeEach(() => {
+            amount = 50000
+            transaction = Transaction.newTransaction(wallet, recipient, amount)
+        })
+
+        it('does not create transaction', () => {
+            expect(transaction).toEqual(undefined)
+        })
+    })
+
 })
