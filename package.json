@@ -37,6 +37,7 @@
   "jest": {
     "transform": {
       ".*": "./node_modules/babel-jest"
-    }
+    },
+    "testEnvironment": "node"
   }
 }

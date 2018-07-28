@@ -19,7 +19,7 @@ export default class Transaction {
             {
                 // send remainder to self
                 amount: senderWallet.balance - amount,
-                address: senderWallet.publickey
+                address: senderWallet.publicKey
             },
             {
                 // send to receiver
