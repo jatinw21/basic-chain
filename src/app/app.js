@@ -2,10 +2,14 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import Blockchain from '../blockchain'
 import P2PServer from './p2p-server'
+import Wallet from '../wallet'
+import TransactionPool from '../wallet/transaction-pool'
 
 const app = express()
 const bc = new Blockchain()
-const p2pServer = new P2PServer(bc);
+const wallet = new Wallet()
+const tp = new TransactionPool()
+const p2pServer = new P2PServer(bc)
 
 app.use(bodyParser.json());
 
@@ -25,6 +29,17 @@ app.post('/mine', (req, res) => {
     res.redirect('/blocks')  
 })
 
+app.get('/transactions', (req, res) => {
+    res.json(tp.transactions)
+})
+
+app.post('/transact', (req, res) => {
+    const { recipient, amount } = req.body
+    const transaction = wallet.createTransaction(recipient, amount, tp)
+
+    res.redirect('/transactions')
+})
+
 export default app
 
 // listening for Websocket server
@@ -36,7 +51,7 @@ p2pServer.listen()
 //     console.log(bc.addBlock(`foo ${i}`).toString());
 // }
 
-import Wallet from '../wallet'
-const wallet = new Wallet();
+// import Wallet from '../wallet'
+// const wallet = new Wallet();
 
-console.log(wallet.toString());
+// console.log(wallet.toString());
