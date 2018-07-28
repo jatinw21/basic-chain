@@ -7,6 +7,31 @@ export default class Transaction {
         this.outputs = []
     }
 
+    update(senderWallet, recipient, amount) {
+        // find the output which refers to the sender one, so that it can be updated
+        const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey)
+        
+        // again check if try to spend exceeding
+        if (amount > senderOutput.amount) {
+            console.log(`Amount: ${amount} exceeds balance.`);
+            return
+        }
+
+        // update the new amount that should be left in sender's wallet
+        senderOutput.amount = senderOutput.amount - amount;
+
+        // add the new transaction
+        this.outputs.push({
+            amount, //ES6
+            address : recipient
+        })
+
+        // the previous signature won't be valid anymore, so we need to update that
+        Transaction.signTransaction(this, senderWallet)
+
+        return this
+    }
+
     static newTransaction(senderWallet, recipient, amount) {
         const transaction = new this()
 
