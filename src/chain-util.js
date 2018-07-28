@@ -18,4 +18,12 @@ export default class ChainUtil {
     static hash(data) {
         return SHA256(JSON.stringify(data)).toString()
     }
+
+    static verfifySignature(publicKey, signature, dataHash) {
+        // we get the key from public key and we provide 'hex' because that's
+        // where the encoding we used to create it initially 
+        // using this key object, now we can use the verify method
+        // this returns true or false
+        return ec.keyFromPublic(publicKey, 'hex').verify(dataHash, signature)
+    }
 }
