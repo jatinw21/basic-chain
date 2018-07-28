@@ -2,6 +2,10 @@ import Websocket from 'ws'
 
 const P2P_PORT = process.env.P2P_PORT || 5002
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
+const MESSAGE_TYPES = { 
+    chain: 'CHAIN',
+    transaction: 'TRANSACTION'
+ }
 
 //  ws://localhost:5001,ws://localhost:5002 is one example of address of websocket
 // $ HTTP_PORT=3002 P2P_PORT=5003 PEERS=ws://localhost:5001,ws://localhost:5002 npm run dev
@@ -13,8 +17,9 @@ const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
 // and nodes accept the largest chain and keep the blockchain going
 
 export default class P2PServer {
-    constructor(blockchain) {
+    constructor(blockchain, transactionPool) {
         this.blockchain = blockchain
+        this.transactionPool = transactionPool
 
         // list of connected ws servers
         this.sockets = []
@@ -56,21 +61,41 @@ export default class P2PServer {
         socket.on('message', message => {
             const data = JSON.parse(message)
             // console.log('data:', data)
-
-            // REVIEW: What id there are other kind of messages later in the app
-            // to send something else
-            this.blockchain.replaceChain(data)
+            switch(data.type) {
+                case MESSAGE_TYPES.chain:
+                    this.blockchain.replaceChain(data.chain);
+                    break;
+                case MESSAGE_TYPES.transaction:
+                    this.transactionPool.updateOrAddTransaction(data.transaction);
+                    break;
+            }
         })
     }
 
     sendChain(socket) {
-        socket.send(JSON.stringify(this.blockchain.chain))
+        socket.send({
+            type: MESSAGE_TYPES.chain,
+            chain: this.blockchain.chain
+        })
+    }
+
+    sendTransaction(socket, transaction) {
+        socket.send({
+            type: MESSAGE_TYPES.transaction,
+            transaction
+        })
     }
 
     // send updated bc of this server to others
     syncChains() {
         this.sockets.forEach(socket => {
             this.sendChain(socket)
+        })
+    }
+
+    broadcastTransaction(transaction) {
+        this.sockets.forEach(socket => {
+            this.sendTransaction(socket, transaction)
         })
     }
 }
