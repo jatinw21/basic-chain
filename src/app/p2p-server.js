@@ -72,18 +72,18 @@ export default class P2PServer {
         })
     }
 
-    sendChain(socket) {
-        socket.send({
+    sendChain(socket) {        
+        socket.send(JSON.stringify({
             type: MESSAGE_TYPES.chain,
             chain: this.blockchain.chain
-        })
+        }))
     }
 
     sendTransaction(socket, transaction) {
-        socket.send({
+        socket.send(JSON.stringify({
             type: MESSAGE_TYPES.transaction,
             transaction
-        })
+        }))
     }
 
     // send updated bc of this server to others
