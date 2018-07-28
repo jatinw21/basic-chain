@@ -1,4 +1,4 @@
-import SHA256 from 'crypto-js/sha256'
+import ChainUtil from '../chain-util'
 
 import { DIFFICULTY, MINE_RATE } from '../config'
 
@@ -48,7 +48,7 @@ export default class Block {
     }
 
     static hash(timestamp, lastHash, data, nonce, difficulty) {
-        return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString();
+        return ChainUtil.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString();
     }
 
     static blockHash(block) {
