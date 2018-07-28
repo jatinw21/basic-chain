@@ -38,14 +38,14 @@ export default class Wallet {
         let transaction = tp.existingTransaction(this.publicKey);
         
         if (transaction) {
-            // exists
-            
+            // exists, so update to add this transaction to output too
+
             // How does it update it inside the transactionPool?
             // Since, in transactionPool there is an array of references to the transaction objects
             // updating the transaction means transactionPool has the new value available too.
             transaction.update(this, recipient, amount)
         } else {
-            // doesnt exist
+            // doesnt exist, so create a new transaction and add to pool
             transaction = Transaction.newTransaction(this, recipient, amount)
             tp.updateOrAddTransaction(transaction)
         }
