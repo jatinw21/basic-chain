@@ -34,6 +34,11 @@ app.get('/transactions', (req, res) => {
 })
 
 app.post('/transact', (req, res) => {
+    // NOTE: Here anyone can post a request at this endpoint
+    // to post a new transaction
+    // In actual cryptocurrencies, this would mean someone could transact
+    // out of ur wallet and is prevented by requiring password
+    // before sending transaction by your wallet.
     const { recipient, amount } = req.body
     const transaction = wallet.createTransaction(recipient, amount, tp)
 
