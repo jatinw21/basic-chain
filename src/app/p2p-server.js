@@ -4,7 +4,8 @@ const P2P_PORT = process.env.P2P_PORT || 5002
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
 const MESSAGE_TYPES = { 
     chain: 'CHAIN',
-    transaction: 'TRANSACTION'
+    transaction: 'TRANSACTION',
+    clear_transactions: 'CLEAR_TRANSACTIONS'
  }
 
 //  ws://localhost:5001,ws://localhost:5002 is one example of address of websocket
@@ -68,6 +69,9 @@ export default class P2PServer {
                 case MESSAGE_TYPES.transaction:
                     this.transactionPool.updateOrAddTransaction(data.transaction);
                     break;
+                case MESSAGE_TYPES.clear_transactions:
+                    this.transactionPool.clear()
+                    break;
                 default:
                     throw new Error("Undefined or improper message type.");
             }
@@ -99,5 +103,11 @@ export default class P2PServer {
         this.sockets.forEach(socket => {
             this.sendTransaction(socket, transaction)
         })
+    }
+
+    broadcastClearTransaction() {
+        this.sockets.forEach(socket => socket.send(JSON.stringify({
+            type: MESSAGE_TYPES.clear_transactions
+        })))
     }
 }

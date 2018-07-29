@@ -4,6 +4,7 @@ import Blockchain from '../blockchain'
 import P2PServer from './p2p-server'
 import Wallet from '../wallet'
 import TransactionPool from '../wallet/transaction-pool'
+import Miner from './miner';
 
 const app = express()
 const bc = new Blockchain()

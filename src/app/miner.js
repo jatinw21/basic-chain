@@ -23,9 +23,12 @@ export default class Miner {
 
         // clear tp local and then broadcast to clear theirs
         this.tp.clear()
-        
+        this.p2pServer.broadcastClearTransactions()
+
 
         // NOTE: In real one, this could lead to someone malicious 
         // clearing honest transactions. So, some meansures
         // would be taking place for when to remove the transactions
+
+        return block
 }
