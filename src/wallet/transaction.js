@@ -64,6 +64,9 @@ export default class Transaction {
     static signTransaction(transaction, senderWallet) {
         transaction.input = {
             timestamp: Date.now(),
+            // REVIEW: Security hole? - sender could just lie here 
+            // that balance is more in their implementation
+            // and it wouldn't get caught because nowhere is it being checked.
             amount: senderWallet.balance,
             address: senderWallet.publicKey,
             signature: senderWallet.sign(ChainUtil.hash(transaction.outputs))
