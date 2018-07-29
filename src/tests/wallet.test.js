@@ -2,6 +2,7 @@ import Wallet from '../wallet'
 import TransactionPool from '../wallet/transaction-pool'
 import Blockchain from '../blockchain'
 import Block from '../blockchain/block';
+import { INITIAL_BALANCE } from '../config';
 
 describe('Wallet', () => {
     let wallet, tp, bc;
@@ -38,6 +39,55 @@ describe('Wallet', () => {
                 expect(transaction.outputs.filter(output => output.address === recipient)
                     .map(output => output.amount))
                     .toEqual([sendAmount, sendAmount])
+            })
+        })
+    })
+
+    describe('calculating a balance', () => {
+        let addBalance, repeatAdd, senderWallet;
+
+        beforeEach(() => {
+            senderWallet = new Wallet()
+            addBalance = 100
+            repeatAdd = 3
+
+            for (let i = 0; i < repeatAdd; i++) {
+                senderWallet.createTransaction(wallet.publicKey, addBalance, bc, tp)
+            }
+            bc.addBlock(tp.transactions)
+        })
+
+        it('calculates the balance for blockchain txns matching the recipient', () => {
+            expect(wallet.calculateBalance(bc)).toEqual(INITIAL_BALANCE + (addBalance * repeatAdd))
+        })
+
+        it('calculates balance for blockchain transactions matching the sender', () => {
+            expect(senderWallet.calculateBalance(bc)).toEqual(INITIAL_BALANCE - (addBalance * repeatAdd))
+        })
+
+        describe('and recipient conducts a transaction', () => {
+            let subtractBalance, recipientBalance;
+
+            beforeEach(() => {
+                tp.clear()
+                subtractBalance = 60
+                recipientBalance = wallet.calculateBalance(bc)
+
+                // the recipient is making transaction
+                wallet.createTransaction(senderWallet.publicKey, subtractBalance, bc, tp)
+                bc.addBlock(tp.transactions)
+            })
+
+            describe('and sender sends another transaction to the recipient', () => {
+                beforeEach(() => {
+                    tp.clear()
+                    senderWallet.createTransaction(wallet.publicKey, addBalance, bc, tp)
+                    bc.addBlock(tp.transactions)
+                })
+
+                it('calculates the recipient balance only using transactions since its most recent one', () => {
+                    expect(wallet.calculateBalance(bc)).toEqual(recipientBalance - subtractBalance + addBalance)
+                })
             })
         })
     })
