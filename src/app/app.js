@@ -11,6 +11,7 @@ const bc = new Blockchain()
 const wallet = new Wallet()
 const tp = new TransactionPool()
 const p2pServer = new P2PServer(bc, tp)
+const miner = new Miner(bc, tp, wallet, p2pServer)
 
 app.use(bodyParser.json());
 
@@ -28,6 +29,13 @@ app.post('/mine', (req, res) => {
     p2pServer.syncChains()
 
     res.redirect('/blocks')  
+})
+
+app.get('/mine-transactions', (req, res) => {
+    const block = miner.mine()
+    console.log(`New block added: ${block.toString()}`)
+
+    res.redirect('/blocks')
 })
 
 app.get('/transactions', (req, res) => {
