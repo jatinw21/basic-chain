@@ -49,7 +49,7 @@ app.post('/transact', (req, res) => {
     // out of ur wallet and is prevented by requiring password
     // before sending transaction by your wallet.
     const { recipient, amount } = req.body
-    const transaction = wallet.createTransaction(recipient, amount, tp)
+    const transaction = wallet.createTransaction(recipient, amount, bc, tp)
 
     p2pServer.broadcastTransaction(transaction)
 

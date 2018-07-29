@@ -27,7 +27,8 @@ export default class Wallet {
     }
 
     // generate + update or add in transaction pool
-    createTransaction(recipient, amount, tp) {
+    createTransaction(recipient, amount, bc, tp) {
+        this.balance = this.calculateBalance(bc)
         // cannot send more than balance
         if (amount > this.balance) {
             console.log(`Amount: ${amount} exceeds the current balance: ${balance}`)

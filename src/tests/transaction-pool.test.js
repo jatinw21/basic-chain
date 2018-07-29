@@ -1,14 +1,16 @@
 import TransactionPool from '../wallet/transaction-pool'
 import Transaction from '../wallet/transaction'
 import Wallet from '../wallet'
+import Blockchain from '../blockchain'
 
 describe('TransactionPool', () => {
-    let tp, wallet, transaction;
+    let tp, wallet, transaction, bc;
 
     beforeEach(() => {
         tp = new TransactionPool();
         wallet = new Wallet();
-        transaction = wallet.createTransaction('randomAddress', 30, tp)
+        bc = new Blockchain()
+        transaction = wallet.createTransaction('randomAddress', 30, bc, tp)
     })
 
     it('adds transaction to the pool', () => {
@@ -38,7 +40,7 @@ describe('TransactionPool', () => {
             validTransactions = [...tp.transactions]
             for (let i = 0; i < 6; i++) {
                 wallet = new Wallet()
-                transaction = wallet.createTransaction('randomAddr', 30, tp)
+                transaction = wallet.createTransaction('randomAddr', 30, bc, tp)
 
                 if (i % 2 == 0) {
                     // curropt transaction
