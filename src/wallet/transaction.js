@@ -1,4 +1,5 @@
 import ChainUtil from '../chain-util'
+import { MINING_REWARD } from '../config'
 
 export default class Transaction {
     constructor() {
@@ -32,18 +33,30 @@ export default class Transaction {
         return this
     }
 
+    static transactionWithOutputs(senderWallet, outputs) {
+        const transaction = new this()
+        transaction.outputs.push(...outputs)
+        Transaction.signTransaction(transaction, senderWallet)
+        return transaction
+    }
+
+    // NOTE: this is handled different to btc. Check online for btc process
+    static rewardTransaction(minerWallet, blockchainWallet) {
+        return Transaction.transactionWithOutputs(blockchainWallet, [{
+            amount: MINING_REWARD, address: minerWallet.publicKey
+        }])
+    }
+
     // cannot give more value to self because there's an if statement checking it
     // cannot make a transaction from another person's wallet because wouldn't have their keypair
     // and so can't sign the transaction with their private key
     static newTransaction(senderWallet, recipient, amount) {
-        const transaction = new this()
-
         if (amount > senderWallet.balance) {
             console.log(`Amount: ${amount} exceeds balance.`)
             return
         }
 
-        transaction.outputs.push(...[
+        return Transaction.transactionWithOutputs(senderWallet, [
             {
                 // send remainder to self
                 amount: senderWallet.balance - amount,
@@ -55,10 +68,6 @@ export default class Transaction {
                 address: recipient
             }
         ])
-
-        Transaction.signTransaction(transaction, senderWallet)
-
-        return transaction
     }
 
     static signTransaction(transaction, senderWallet) {
