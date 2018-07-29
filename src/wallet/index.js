@@ -77,7 +77,7 @@ export default class Wallet {
         blockchain.chain.forEach(block => block.data.forEach(t => transactions.push(t)))
 
         // transaction that were created by this specific wallet
-        const walletInputTs = transactions.filter(t => transactions.input.address === this.publicKey)
+        const walletInputTs = transactions.filter(t => t.input.address === this.publicKey)
 
         let startTime = 0
 
